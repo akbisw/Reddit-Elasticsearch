@@ -17,6 +17,12 @@ mappings = {
 
 body = {'mappings': mappings}
 
+try:
+    client.indices.create(index=index_name, body=body)
+except es.exceptions.TransportError as e:
+    if e.error != 'index_already_exists_exception':
+        raise
+
 class DatasetReader(object):
     """Iterate on the objects stored in a reddit dataset."""
 
